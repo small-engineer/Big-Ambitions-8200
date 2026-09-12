@@ -24,6 +24,10 @@ make package        # Output/Unit-8200 と dist/Unit-8200.zip を生成
 
 日本語化MODの自動公開方式を再利用している。GitHub Releaseへ `Unit-8200.zip` を添付して公開すると、ワークフローがZIPのパス、必須DLL、英日JSONを検証してから既存Workshopアイテムを更新する。初回のWorkshopアイテム作成とRequired Itemsの設定はSteam画面で行う。
 
+Steamへ送るタイトル、BBCode説明文、アイキャッチ画像は `workshop/title.txt`、`workshop/description.txt`、`workshop/preview.jpg` で管理し、Releaseごとに同じ内容を反映する。
+
+公開先: [Steam Workshop — 8200](https://steamcommunity.com/sharedfiles/filedetails/?id=3800064885)
+
 GitHubのActions設定には次を登録する。
 
 | 種類 | 名前 | 値 |

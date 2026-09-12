@@ -8,10 +8,14 @@ from pathlib import Path
 
 
 APP_ID = "1331550"
+ROOT = Path(__file__).resolve().parents[1]
+TITLE_FILE = ROOT / "workshop" / "title.txt"
+DESCRIPTION_FILE = ROOT / "workshop" / "description.txt"
+PREVIEW_FILE = ROOT / "workshop" / "preview.jpg"
 
 
 def escaped(value: str) -> str:
-    return value.replace("\\", "\\\\").replace('"', '\\"').replace("\n", " ")
+    return value.replace("\\", "\\\\").replace('"', '\\"').replace("\r", "").replace("\n", "\\n")
 
 
 def main() -> None:
@@ -31,6 +35,9 @@ def main() -> None:
         "appid": APP_ID,
         "publishedfileid": args.published_file_id,
         "contentfolder": str(args.content_folder.resolve()),
+        "previewfile": str(PREVIEW_FILE.resolve()),
+        "title": TITLE_FILE.read_text(encoding="utf-8").strip(),
+        "description": DESCRIPTION_FILE.read_text(encoding="utf-8").strip(),
         "changenote": args.change_note,
     }
     body = ["\"workshopitem\"", "{"]

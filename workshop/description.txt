@@ -1,0 +1,57 @@
+[h1]8200 - OSINT Service / OSINTサービス[/h1]
+
+公開情報を調査・分析する、防御目的のサイバーセキュリティ事業を追加します。
+
+オフィスを借り、ハッカーを採用し、コンピュータとサーバーを用意してOSINTサービス会社を経営しましょう。顧客対応はオンラインで行われ、来店客は発生しません。
+
+[h2]主な機能[/h2]
+[list]
+[*]新しいオフィス事業「OSINT Service」
+[*]Programmerを土台にした専門職「Hacker」
+[*]OSINTサービス料金: 初期市場価格 $300 / 時間
+[*]75 m²ごとに約1台、最大20台のサーバー設備要件
+[*]サーバーの電力・接続費を毎日請求
+[*]英語・日本語ローカライズ
+[*]OSINTとリスク判断を解説するゲーム内ヘルプ
+[/list]
+
+[h2]サーバー維持費[/h2]
+[list]
+[*]Blade Server: $40 / 日
+[*]Rack Server: $80 / 日
+[*]Mainframe Server: $160 / 日
+[/list]
+
+[h2]サイバーセキュリティを学ぶ[/h2]
+ゲーム内ヘルプでは、次の防御的な判断手順を扱います。
+
+[list]
+[*]調査目的と合法的なスコープを収集前に決める
+[*]情報源、取得時刻、文脈を記録する
+[*]観測した事実と推測を分ける
+[*]重要な主張を独立した情報源で裏付ける
+[*]深刻度スコアだけでなく、外部公開、証拠の確度、悪用可能性、事業影響を合わせて優先順位を決める
+[*]制約、不確実性、安全な次の行動を報告する
+[/list]
+
+このModは無許可アクセス、認証情報の窃取、ストーキング、実在人物の標的化を扱いません。外部サービスへの通信やテレメトリも行いません。
+
+[h2]必要なMod[/h2]
+[list]
+[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3741969623]IT Business Expansion[/url] — Blade / Rack / Mainframe Serverを使用します
+[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3795855100]SkillKit[/url] — Hackerの求人、研修、ワークステーション割り当てに使用します
+[/list]
+
+両方をサブスクライブし、ゲームのModsメニューで有効にしてください。依存Modがない場合、OSINT Serviceは登録されません。
+
+[h2]対応[/h2]
+[list]
+[*]Big Ambitions 1.0系
+[*]Windows / macOS
+[*]日本語 / English
+[/list]
+
+[h2]English[/h2]
+Adds a defensive cybersecurity office business focused on OSINT. Hire Hacker employees, assign them to computer workstations, install servers from IT Business Expansion, and provide a $300/hour digital service. The in-game guide covers lawful scoping, source provenance, corroboration, evidence confidence, risk-based prioritization, and responsible reporting.
+
+Requires IT Business Expansion and SkillKit. No intrusion mechanics, real-person targeting, external network access, or telemetry.

@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MOD = ROOT / "Assets" / "Mods" / "Unit-8200"
 LOCALES = MOD / "Locales"
 SOURCE = MOD / "Scripts" / "Unit8200Mod.cs"
+WORKSHOP = ROOT / "workshop"
 
 STABLE_IDS = {
     "unit-8200:businesstype_osintservice",
@@ -78,7 +79,18 @@ def main() -> None:
     if missing_meta:
         fail(f"missing Unity metadata: {missing_meta}")
 
-    print(f"OK: {len(english)} synchronized locale keys, stable IDs, manifest, and Unity metadata")
+    title = (WORKSHOP / "title.txt").read_text(encoding="utf-8").strip()
+    description = (WORKSHOP / "description.txt").read_text(encoding="utf-8")
+    preview = WORKSHOP / "preview.jpg"
+    if not title or "OSINT" not in title:
+        fail("Workshop title must be non-empty and identify OSINT")
+    for required_text in ("3741969623", "3795855100", "[h1]", "[list]", "[/list]"):
+        if required_text not in description:
+            fail(f"Workshop description is missing {required_text!r}")
+    if not preview.is_file() or preview.stat().st_size >= 1_000_000:
+        fail("Workshop preview.jpg must exist and be smaller than 1 MB")
+
+    print(f"OK: {len(english)} locale keys, stable IDs, manifest, Unity metadata, and Workshop assets")
 
 
 if __name__ == "__main__":

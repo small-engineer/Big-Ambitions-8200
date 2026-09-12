@@ -8,6 +8,7 @@
 *.sln.docstates
 *.csproj.user
 *.DotSettings.user
+.DS_Store
 TestResults/
 
 # Mod Builder packaged outputs
