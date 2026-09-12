@@ -87,6 +87,10 @@ def main() -> None:
     for required_text in ("3741969623", "3795855100", "[h1]", "[list]", "[/list]"):
         if required_text not in description:
             fail(f"Workshop description is missing {required_text!r}")
+    player_copy = description + "\n" + english["help_unit-8200:businesstype_osintservice_content"] + "\n" + japanese["help_unit-8200:businesstype_osintservice_content"]
+    for out_of_world_disclaimer in ("実在人物", "架空組織", "real-person targeting", "fictional organization"):
+        if out_of_world_disclaimer in player_copy:
+            fail(f"player-facing copy contains an out-of-world disclaimer: {out_of_world_disclaimer!r}")
     if not preview.is_file() or preview.stat().st_size >= 1_000_000:
         fail("Workshop preview.jpg must exist and be smaller than 1 MB")
 

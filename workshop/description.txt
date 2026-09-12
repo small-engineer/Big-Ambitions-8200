@@ -34,8 +34,6 @@
 [*]制約、不確実性、安全な次の行動を報告する
 [/list]
 
-このModは無許可アクセス、認証情報の窃取、ストーキング、実在人物の標的化を扱いません。外部サービスへの通信やテレメトリも行いません。
-
 [h2]必要なMod[/h2]
 [list]
 [*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3741969623]IT Business Expansion[/url] — Blade / Rack / Mainframe Serverを使用します
@@ -54,4 +52,4 @@
 [h2]English[/h2]
 Adds a defensive cybersecurity office business focused on OSINT. Hire Hacker employees, assign them to computer workstations, install servers from IT Business Expansion, and provide a $300/hour digital service. The in-game guide covers lawful scoping, source provenance, corroboration, evidence confidence, risk-based prioritization, and responsible reporting.
 
-Requires IT Business Expansion and SkillKit. No intrusion mechanics, real-person targeting, external network access, or telemetry.
+Requires IT Business Expansion and SkillKit.
