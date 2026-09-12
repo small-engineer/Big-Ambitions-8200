@@ -60,7 +60,7 @@ def main() -> None:
     manifest = (MOD / "ModManifest.asset").read_text(encoding="utf-8")
     required_manifest_values = {
         "ModId": "Unit-8200",
-        "Version": "0.1.0",
+        "Version": "0.1.1",
         "AssetBundleName": "",
     }
     for key, value in required_manifest_values.items():
