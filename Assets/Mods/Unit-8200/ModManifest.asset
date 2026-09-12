@@ -15,7 +15,7 @@ MonoBehaviour:
   ModId: Unit-8200
   DisplayName: 8200 - OSINT Service
   Author: small-engineer
-  Version: 0.1.1
+  Version: 0.2.0
   AssetBundleName:
   ModAssembly: {fileID: 5897886265953266890, guid: 82008200820082008200820082008200, type: 3}
   LocalesFolder: {fileID: 102900000, guid: 82008200820082008200820082008202, type: 3}

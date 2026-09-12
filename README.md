@@ -4,7 +4,7 @@
 Mod ID: `Unit-8200`
 対象: Big Ambitions 1.0 系 / 公式 Modding SDK
 
-> 実装状況: v0.1.1 MVP。OSINT事業、Hacker職、サーバー要件・日次費用、英日ローカライズ、ゲーム内フィールドガイドを収録しています。
+> 実装状況: v0.2.0。OSINT事業、Hacker職、サーバー要件・日次費用、競合の引き抜き、Legendary Candidate、英日ローカライズ、ゲーム内フィールドガイドを収録しています。
 
 ## ビルドと導入
 
@@ -31,7 +31,7 @@ Steamへ送るタイトル、BBCode説明文、アイキャッチ画像は `work
 `steamcmd` をPATHへ入れた状態で、リリースごとに次を実行する。SteamCMDがパスワードやSteam Guardコードを求めた場合は、その場で入力する。認証情報はファイル・GitHub・シェル履歴へ保存しない。
 
 ```sh
-make workshop-publish RELEASE_TAG=v0.1.1
+make workshop-publish RELEASE_TAG=v0.2.0
 ```
 
 コマンドは最新のModをビルド・検証・パッケージ化してから、タイトル、BBCode説明、プレビュー画像とともにWorkshop ID `3800064885` を更新する。検証や認証に失敗した場合は成功扱いにしない。

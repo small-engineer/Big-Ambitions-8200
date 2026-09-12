@@ -60,7 +60,7 @@ def main() -> None:
     manifest = (MOD / "ModManifest.asset").read_text(encoding="utf-8")
     required_manifest_values = {
         "ModId": "Unit-8200",
-        "Version": "0.1.1",
+        "Version": "0.2.0",
         "AssetBundleName": "",
     }
     for key, value in required_manifest_values.items():
@@ -91,6 +91,9 @@ def main() -> None:
     for out_of_world_disclaimer in ("実在人物", "架空組織", "real-person targeting", "fictional organization"):
         if out_of_world_disclaimer in player_copy:
             fail(f"player-facing copy contains an out-of-world disclaimer: {out_of_world_disclaimer!r}")
+    for implementation_marker in ("PoachByRival", "LegendaryChance", "Kevin Mitnick", "Tsutomu Shimomura"):
+        if implementation_marker not in source:
+            fail(f"rivalry implementation is missing {implementation_marker!r}")
     if not preview.is_file() or preview.stat().st_size >= 1_000_000:
         fail("Workshop preview.jpg must exist and be smaller than 1 MB")
 

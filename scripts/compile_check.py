@@ -21,6 +21,7 @@ DEFAULT_MANAGED = (
 ASSEMBLIES = [
     "BigAmbitions.dll",
     "BigAmbitions.AI.dll",
+    "BigAmbitions.Characters.dll",
     "BigAmbitions.Items.dll",
     "BigAmbitions.ModAPI.dll",
     "BigAmbitions.ModsInternal.dll",

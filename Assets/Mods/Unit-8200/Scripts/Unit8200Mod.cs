@@ -6,10 +6,12 @@ using System.Reflection;
 using System.Threading.Tasks;
 using AI.Customers.CustomerEntries;
 using BAModAPI;
+using BigAmbitions.Rivals;
 using BigAmbitions.Items;
 using BigAmbitions.SaveSystem;
 using Buildings;
 using Buildings.BuildingTypes.Shared.BusinessRequirement;
+using Entities;
 using Helpers;
 using JimmysUnityUtilities;
 using Localizor;
@@ -53,11 +55,15 @@ public sealed class Unit8200CityMod : IModBigAmbitions
         Unit8200SkillKit.BindIntoWorld();
         Unit8200Help.EnsureRegistered();
         Unit8200InfrastructureBilling.Start();
+        Unit8200Rivalry.Start();
+        Unit8200LegendaryCandidates.Start();
         return Task.CompletedTask;
     }
 
     public Task OnUnloadAsync()
     {
+        Unit8200LegendaryCandidates.Stop();
+        Unit8200Rivalry.Stop();
         Unit8200InfrastructureBilling.Stop();
         Unit8200SkillKit.Unbind();
         return Task.CompletedTask;
@@ -459,6 +465,161 @@ internal static class Unit8200InfrastructureBilling
             Unit8200Ids.MainframeServer => 160f,
             _ => 0f,
         };
+    }
+}
+
+internal static class Unit8200Rivalry
+{
+    private const int PoachIntervalDays = 7;
+    private const int PoachDeadlineDays = 3;
+    private const int PoachRaisePercentage = 25;
+    private static readonly Dictionary<Address, int> LastAttemptDay = new();
+    private static bool _started;
+
+    internal static void Start()
+    {
+        if (_started)
+            return;
+        _started = true;
+        GlobalEvents.onNewDay += TryRivalPoach;
+    }
+
+    internal static void Stop()
+    {
+        if (!_started)
+            return;
+        _started = false;
+        GlobalEvents.onNewDay -= TryRivalPoach;
+        LastAttemptDay.Clear();
+    }
+
+    private static void TryRivalPoach()
+    {
+        var current = SaveGameManager.Current;
+        if (current?.BuildingRegistrations == null || current.Day < PoachIntervalDays || current.Day % PoachIntervalDays != 0)
+            return;
+
+        try
+        {
+            foreach (var registration in current.BuildingRegistrations.Where(IsPlayerOsintBusiness))
+            {
+                if (LastAttemptDay.TryGetValue(registration.Address, out var lastDay) && lastDay == current.Day)
+                    continue;
+                LastAttemptDay[registration.Address] = current.Day;
+
+                var hackers = EmployeeHelper.GetEmployeeInstances()
+                    .Where(employee => employee != null && !employee.IsCandidate && employee.IsPoachable &&
+                        employee.assignedAddress.Equals(registration.Address) && HasHackerSkill(employee))
+                    .OrderBy(employee => employee.satisfaction)
+                    .ToList();
+                if (hackers.Count == 0)
+                    continue;
+
+                var averageSatisfaction = hackers.Average(employee => employee.satisfaction);
+                if (!ShouldAttemptPoach(averageSatisfaction, UnityEngine.Random.value))
+                    continue;
+
+                var rivalId = RivalsHelper.GetSpecialRivalByNeighborhood(registration.Neighborhood)?.rivalData?.id;
+                if (string.IsNullOrEmpty(rivalId))
+                    rivalId = RivalsHelper.GetRandomSpecialRivalId(true, true);
+                if (string.IsNullOrEmpty(rivalId))
+                    continue;
+
+                hackers[0].PoachByRival(rivalId, PoachDeadlineDays, PoachRaisePercentage);
+                Debug.Log($"[Unit-8200] A rival attempted to poach {hackers[0].characterData?.name} from {registration.BusinessName}.");
+                return;
+            }
+        }
+        catch (Exception exception)
+        {
+            Debug.LogWarning($"[Unit-8200] Rival poaching event skipped: {exception.GetType().Name}.");
+        }
+    }
+
+    internal static bool ShouldAttemptPoach(float averageSatisfaction, float randomValue)
+    {
+        var chance = Mathf.Lerp(0.35f, 0.10f, Mathf.Clamp01(averageSatisfaction / 100f));
+        return randomValue < chance;
+    }
+
+    private static bool IsPlayerOsintBusiness(BuildingRegistration registration) =>
+        registration != null && registration.RentedByPlayer &&
+        string.Equals(registration.businessTypeName, Unit8200Ids.BusinessType, StringComparison.Ordinal);
+
+    internal static bool HasHackerSkill(EmployeeInstance employee) =>
+        employee.HasSkill(Unit8200Ids.HackerSkill);
+}
+
+internal static class Unit8200LegendaryCandidates
+{
+    private const float LegendaryChance = 0.01f;
+    private const float MinimumHackerSkill = 85f;
+    private const float WageMultiplier = 2f;
+    private static readonly string[] Names =
+    {
+        "Kevin Mitnick",
+        "George Hotz",
+        "Joanna Rutkowska",
+        "Mudge",
+        "Tsutomu Shimomura",
+    };
+    // ponytail: IDs are session-scoped; add save metadata only if candidate rerolls become exploitable.
+    private static readonly HashSet<string> SeenCandidateIds = new(StringComparer.Ordinal);
+    private static bool _started;
+
+    internal static void Start()
+    {
+        if (_started)
+            return;
+        _started = true;
+        GlobalEvents.onNewHour += Scan;
+        Scan();
+    }
+
+    internal static void Stop()
+    {
+        if (!_started)
+            return;
+        _started = false;
+        GlobalEvents.onNewHour -= Scan;
+        SeenCandidateIds.Clear();
+    }
+
+    private static void Scan()
+    {
+        try
+        {
+            var employees = EmployeeHelper.GetEmployeeInstances();
+            if (employees == null)
+                return;
+
+            var usedNames = employees
+                .Where(employee => employee?.characterData != null)
+                .Select(employee => employee.characterData.name)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var candidate in employees.Where(employee => employee != null && employee.IsCandidate && Unit8200Rivalry.HasHackerSkill(employee)))
+            {
+                if (string.IsNullOrEmpty(candidate.id) || !SeenCandidateIds.Add(candidate.id) || UnityEngine.Random.value >= LegendaryChance)
+                    continue;
+
+                var name = Names.FirstOrDefault(candidateName => !usedNames.Contains(candidateName));
+                if (name == null || candidate.characterData == null)
+                    return;
+
+                candidate.characterData.name = name;
+                candidate.hourlyWage *= WageMultiplier;
+                var skillIncrease = MinimumHackerSkill - candidate.GetSkillValue(Unit8200Ids.HackerSkill);
+                if (skillIncrease > 0f)
+                    candidate.IncreaseSkill(Unit8200Ids.HackerSkill, skillIncrease);
+                usedNames.Add(name);
+                Debug.Log($"[Unit-8200] Legendary Hacker candidate available: {name}.");
+            }
+        }
+        catch (Exception exception)
+        {
+            Debug.LogWarning($"[Unit-8200] Legendary candidate scan skipped: {exception.GetType().Name}.");
+        }
     }
 }
 

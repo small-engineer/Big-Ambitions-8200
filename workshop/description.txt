@@ -11,6 +11,8 @@
 [*]OSINTサービス料金: 初期市場価格 $300 / 時間
 [*]75 m²ごとに約1台、最大20台のサーバー設備要件
 [*]サーバーの電力・接続費を毎日請求
+[*]競合企業によるHacker引き抜きイベント。BizManから競合人材を逆に引き抜くことも可能
+[*]著名ハッカーがまれに現れるLegendary Candidate
 [*]英語・日本語ローカライズ
 [*]OSINTとリスク判断を解説するゲーム内ヘルプ
 [/list]
@@ -50,6 +52,6 @@
 [/list]
 
 [h2]English[/h2]
-Adds a defensive cybersecurity office business focused on OSINT. Hire Hacker employees, assign them to computer workstations, install servers from IT Business Expansion, and provide a $300/hour digital service. The in-game guide covers lawful scoping, source provenance, corroboration, evidence confidence, risk-based prioritization, and responsible reporting.
+Adds a cybersecurity office business focused on OSINT. Hire Hacker employees, assign them to computer workstations, install servers from IT Business Expansion, and provide a $300/hour digital service. Rival firms can try to poach your Hackers; use BizMan to negotiate with rival employees in return. Famous hackers may rarely appear as Legendary Candidates.
 
 Requires IT Business Expansion and SkillKit.
