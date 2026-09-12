@@ -20,31 +20,21 @@ make package        # Output/Unit-8200 と dist/Unit-8200.zip を生成
 
 別のSteam Libraryでは `MANAGED_DIR=/path/to/Managed make package` とする。ローカル確認は `Output/Unit-8200` をゲームの `ModsLocal` へ置く。公式SDKのUnity 2022.3.62f2からも `Big Ambitions > Mod Builder` で同じ構成をビルドできる。
 
-## GitHub ReleaseからSteam Workshopへ
+## GitHub ReleaseとSteam Workshop公開
 
-日本語化MODの自動公開方式を再利用している。GitHub Releaseへ `Unit-8200.zip` を添付して公開すると、ワークフローがZIPのパス、必須DLL、英日JSONを検証してから既存Workshopアイテムを更新する。初回のWorkshopアイテム作成とRequired Itemsの設定はSteam画面で行う。
+GitHub Releaseへ `Unit-8200.zip` を添付して公開すると、ワークフローがZIPのパス、必須DLL、英日JSONを検証する。Steam Guardを安全に扱うため、既存Workshopアイテムの更新はローカルのSteamCMDで毎回対話認証して行う。
 
 Steamへ送るタイトル、BBCode説明文、アイキャッチ画像は `workshop/title.txt`、`workshop/description.txt`、`workshop/preview.jpg` で管理し、Releaseごとに同じ内容を反映する。
 
 公開先: [Steam Workshop — 8200](https://steamcommunity.com/sharedfiles/filedetails/?id=3800064885)
 
-GitHubのActions設定には次を登録する。
-
-| 種類 | 名前 | 値 |
-| --- | --- | --- |
-| Variable | `STEAM_WORKSHOP_ITEM_ID` | Workshop URLの数値ID |
-| Secret | `STEAM_USERNAME` | アイテム所有者のSteamアカウント名 |
-| Secret | `STEAM_PASSWORD` | Steamアカウントのパスワード |
-| Secret | `STEAM_CONFIG_VDF` | SteamCMDで認証済みの`config.vdf`をBase64化した値 |
-
-ワークフローはパスワードで毎回ログインし、`config.vdf`をSteam Guardの端末認証に使う。Steam Guardの再承認を求められた場合だけ、ローカルのSteamCMDで再ログインして`STEAM_CONFIG_VDF`を更新する。
+`steamcmd` をPATHへ入れた状態で、リリースごとに次を実行する。SteamCMDがパスワードやSteam Guardコードを求めた場合は、その場で入力する。認証情報はファイル・GitHub・シェル履歴へ保存しない。
 
 ```sh
-make package
-gh release create v0.1.1 dist/Unit-8200.zip --generate-notes
+make workshop-publish RELEASE_TAG=v0.1.1
 ```
 
-Release添付物が欠けている場合や検証に失敗した場合は、Workshopを上書きせず停止する。認証情報はリポジトリや配布ZIPへ入れない。
+コマンドは最新のModをビルド・検証・パッケージ化してから、タイトル、BBCode説明、プレビュー画像とともにWorkshop ID `3800064885` を更新する。検証や認証に失敗した場合は成功扱いにしない。
 
 ## 1. 今回の結論
 

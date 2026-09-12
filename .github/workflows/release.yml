@@ -1,4 +1,4 @@
-name: Release to Steam Workshop
+name: Verify GitHub Release
 
 on:
   release:
@@ -7,12 +7,8 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: steam-workshop
-  cancel-in-progress: false
-
 jobs:
-  upload:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout released version
@@ -32,58 +28,3 @@ jobs:
           python3 -B scripts/release_archive.py extract \
             "$RUNNER_TEMP/Unit-8200.zip" \
             "$RUNNER_TEMP/workshop-content"
-
-      - name: Set up SteamCMD
-        id: steamcmd
-        uses: andriivitiv/setup-steamcmd@afc45f145b95c175c3a3862d3ca84756537d48e8 # v1
-
-      - name: Upload to Steam Workshop
-        env:
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
-          STEAMCMD_EXECUTABLE: ${{ steps.steamcmd.outputs.executable }}
-          STEAM_CONFIG_VDF: ${{ secrets.STEAM_CONFIG_VDF }}
-          STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
-          STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
-          WORKSHOP_ITEM_ID: ${{ vars.STEAM_WORKSHOP_ITEM_ID }}
-        run: |
-          set -euo pipefail
-
-          [[ "$WORKSHOP_ITEM_ID" =~ ^[1-9][0-9]*$ ]] || {
-            echo "STEAM_WORKSHOP_ITEM_ID must be a numeric repository variable."
-            exit 1
-          }
-          [[ -n "$STEAM_USERNAME" ]] || {
-            echo "STEAM_USERNAME repository secret is missing."
-            exit 1
-          }
-          [[ -n "$STEAM_PASSWORD" ]] || {
-            echo "STEAM_PASSWORD repository secret is missing."
-            exit 1
-          }
-          [[ -n "$STEAM_CONFIG_VDF" ]] || {
-            echo "STEAM_CONFIG_VDF repository secret is missing."
-            exit 1
-          }
-
-          mkdir -p "$HOME/Steam/config"
-          printf '%s' "$STEAM_CONFIG_VDF" | base64 --decode > "$HOME/Steam/config/config.vdf"
-          chmod 600 "$HOME/Steam/config/config.vdf"
-          trap 'rm -f "$HOME/Steam/config/config.vdf"' EXIT
-
-          python3 -B scripts/build_workshop.py \
-            --vdf "$RUNNER_TEMP/workshop.vdf" \
-            --published-file-id "$WORKSHOP_ITEM_ID" \
-            --content-folder "$RUNNER_TEMP/workshop-content" \
-            --change-note "GitHub Release $RELEASE_TAG"
-
-          "$STEAMCMD_EXECUTABLE" \
-            +@ShutdownOnFailedCommand 1 \
-            +@NoPromptForPassword 1 \
-            +login "$STEAM_USERNAME" "$STEAM_PASSWORD" \
-            +workshop_build_item "$RUNNER_TEMP/workshop.vdf" \
-            +quit | tee "$RUNNER_TEMP/steamcmd.log"
-
-          grep -q 'Success\.' "$RUNNER_TEMP/steamcmd.log" || {
-            echo "SteamCMD did not report a successful Workshop update."
-            exit 1
-          }
