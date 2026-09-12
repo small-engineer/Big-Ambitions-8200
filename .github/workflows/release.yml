@@ -42,6 +42,7 @@ jobs:
           RELEASE_TAG: ${{ github.event.release.tag_name }}
           STEAMCMD_EXECUTABLE: ${{ steps.steamcmd.outputs.executable }}
           STEAM_CONFIG_VDF: ${{ secrets.STEAM_CONFIG_VDF }}
+          STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
           STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
           WORKSHOP_ITEM_ID: ${{ vars.STEAM_WORKSHOP_ITEM_ID }}
         run: |
@@ -53,6 +54,10 @@ jobs:
           }
           [[ -n "$STEAM_USERNAME" ]] || {
             echo "STEAM_USERNAME repository secret is missing."
+            exit 1
+          }
+          [[ -n "$STEAM_PASSWORD" ]] || {
+            echo "STEAM_PASSWORD repository secret is missing."
             exit 1
           }
           [[ -n "$STEAM_CONFIG_VDF" ]] || {
@@ -74,7 +79,7 @@ jobs:
           "$STEAMCMD_EXECUTABLE" \
             +@ShutdownOnFailedCommand 1 \
             +@NoPromptForPassword 1 \
-            +login "$STEAM_USERNAME" \
+            +login "$STEAM_USERNAME" "$STEAM_PASSWORD" \
             +workshop_build_item "$RUNNER_TEMP/workshop.vdf" \
             +quit | tee "$RUNNER_TEMP/steamcmd.log"
 

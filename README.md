@@ -4,7 +4,7 @@
 Mod ID: `Unit-8200`
 対象: Big Ambitions 1.0 系 / 公式 Modding SDK
 
-> 実装状況: v0.1.0 MVP。OSINT事業、Hacker職、サーバー要件・日次費用、英日ローカライズ、ゲーム内フィールドガイドを収録しています。
+> 実装状況: v0.1.1 MVP。OSINT事業、Hacker職、サーバー要件・日次費用、英日ローカライズ、ゲーム内フィールドガイドを収録しています。
 
 ## ビルドと導入
 
@@ -34,11 +34,14 @@ GitHubのActions設定には次を登録する。
 | --- | --- | --- |
 | Variable | `STEAM_WORKSHOP_ITEM_ID` | Workshop URLの数値ID |
 | Secret | `STEAM_USERNAME` | アイテム所有者のSteamアカウント名 |
+| Secret | `STEAM_PASSWORD` | Steamアカウントのパスワード |
 | Secret | `STEAM_CONFIG_VDF` | SteamCMDで認証済みの`config.vdf`をBase64化した値 |
+
+ワークフローはパスワードで毎回ログインし、`config.vdf`をSteam Guardの端末認証に使う。Steam Guardの再承認を求められた場合だけ、ローカルのSteamCMDで再ログインして`STEAM_CONFIG_VDF`を更新する。
 
 ```sh
 make package
-gh release create v0.1.0 dist/Unit-8200.zip --generate-notes
+gh release create v0.1.1 dist/Unit-8200.zip --generate-notes
 ```
 
 Release添付物が欠けている場合や検証に失敗した場合は、Workshopを上書きせず停止する。認証情報はリポジトリや配布ZIPへ入れない。
