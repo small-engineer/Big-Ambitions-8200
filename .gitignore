@@ -1,0 +1,45 @@
+[Bb]in/
+[Oo]bj/
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.csproj.user
+*.DotSettings.user
+TestResults/
+
+# Mod Builder packaged outputs
+Output/
+dist/
+
+# Unity generated
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Game DLLs are user-sourced from the local Big Ambitions install
+# via the Welcome window importer. Ignore the imported binaries and generated metas.
+Assets/_BaDependencies/GameDlls/**/*.dll
+Assets/_BaDependencies/GameDlls/**/*.dll.meta

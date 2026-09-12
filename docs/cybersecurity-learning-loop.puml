@@ -1,0 +1,32 @@
+@startuml
+!theme plain
+
+title OSINT Service - Cybersecurity Learning Loop
+
+start
+:Client brief;
+:Govern\nSet scope, budget, and risk tolerance;
+:Identify\nMap critical assets and dependencies;
+:Plan OSINT collection;
+repeat
+  :Collect public observations;
+  :Corroborate evidence\nCheck freshness, reliability, and independence;
+  :Narrow or expand collection if needed;
+repeat while (Evidence sufficient?) is (No) not (Yes)
+:Map threat goals\nMITRE ATT&CK tactics;
+
+:Prioritize risk\nSeverity + exploitation + exposure + impact;
+:Choose defenses\nProtect + Detect + Respond + Recover;
+
+if (Incident occurs?) then (Yes)
+  :Contain and communicate;
+  :Recover and validate service;
+else (No)
+  :Deliver recommendations;
+endif
+
+:After Action Report\nFacts, uncertainty, residual risk, lessons;
+:Improve maturity and next playbook;
+stop
+
+@enduml

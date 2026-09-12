@@ -1,0 +1,10 @@
+{
+  "unit-8200:businesstype_osintservice": "OSINT Service",
+  "unit-8200:businesstype_osintservice_alias": "OSINT Service",
+  "unit-8200:skill_hacker": "Hacker",
+  "unit-8200:itemname_hourlyosintfee": "OSINT Service Fee (Hourly)",
+  "unit-8200:businessrequirement_serverinfrastructure": "Server Infrastructure",
+  "unit-8200:transaction_serverinfrastructure": "Server Infrastructure (Power & Connectivity)",
+  "unit-8200:transaction_serverinfrastructure_label": "Server Infrastructure",
+  "help_unit-8200:businesstype_osintservice_content": "**OSINT Service** is a defensive cybersecurity consultancy operating from an office. Customers connect digitally; no visitors enter the office.\n\nTo operate, assign **Hacker** employees to standard computer workstations and install about one IT Business Expansion server per 75 m² (maximum 20). Daily infrastructure costs are Blade **$40**, Rack **$80**, and Mainframe **$160**.\n\n**OSINT learning loop**\n1. Define a lawful question and scope before collecting anything.\n2. Use public sources and record source, time, and context.\n3. Separate observation from inference. Corroborate important claims with independent sources.\n4. Prioritize by exposure, evidence confidence, exploitation likelihood, and business impact—not severity score alone.\n5. Report limitations, uncertainty, and the safest next action.\n\nGood OSINT is not unauthorized access. This mod does not teach intrusion, credential theft, stalking, or targeting real people. Its later case system will use fictional data and defensive decisions.\n\n**Triage reminder:** an internet-exposed issue with credible evidence of active exploitation may deserve action before a higher-scored issue on an isolated test system. Preserve the evidence trail so another analyst can reproduce your conclusion."
+}
